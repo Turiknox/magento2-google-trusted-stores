@@ -1,0 +1,31 @@
+<?php
+/*
+ * Turiknox_TrustedStores
+
+ * @category   Turiknox
+ * @package    Turiknox_TrustedStores
+ * @copyright  Copyright (c) 2017 Turiknox
+ * @license    https://github.com/Turiknox/magento2-google-trusted-stores/blob/master/LICENSE.md
+ * @version    1.0.0
+ */
+?>
+<?php if ($block->isEnabled()): ?>
+    <!-- BEGIN GOOGLE TRUSTED STORES BADGE CODE -->
+    <script type="text/javascript">
+        var gts = gts || [];
+
+        gts.push(["id", "<?php echo $block->escapeHtml($block->getTrustedStoresId()); ?>"]);
+        gts.push(["badge_position", "<?php echo $block->escapeHtml($block->getBadgePosition()); ?>"]);
+        gts.push(["locale", "<?php echo $block->getLocaleCode(); ?>"]);
+
+        (function() {
+            var gts = document.createElement("script");
+            gts.type = "text/javascript";
+            gts.async = true;
+            gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(gts, s);
+        })();
+    </script>
+    <!-- END GOOGLE TRUSTED STORES BADGE CODE -->
+<?php endif; ?>

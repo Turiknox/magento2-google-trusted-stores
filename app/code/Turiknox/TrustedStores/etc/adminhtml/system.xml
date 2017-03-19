@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/*
+ * Turiknox_TrustedStores
+
+ * @category   Turiknox
+ * @package    Turiknox_TrustedStores
+ * @copyright  Copyright (c) 2017 Turiknox
+ * @license    https://github.com/Turiknox/magento2-google-trusted-stores/blob/master/LICENSE.md
+ * @version    1.0.0
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="google">
+            <group id="trustedstores" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Google Trusted Stores</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Store ID</label>
+                    <comment>Your Google Trusted Stores ID</comment>
+                </field>
+                <field id="position" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Badge Position</label>
+                    <source_model>Turiknox\TrustedStores\Model\Config\Source\Badgeposition</source_model>
+                </field>
+                <field id="estimated_shipping" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Estimated Shipping Days</label>
+                    <comment>The estimated number of days from the order being placed on which
+                        you will ship the order</comment>
+                </field>
+                <field id="estimated_delivery" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Estimated Delivery Days</label>
+                    <comment>The estimated number of days from the order being placed on which
+                        you expect the order to be delivered to the customer</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

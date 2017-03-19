@@ -1,0 +1,39 @@
+<?php
+/*
+ * Turiknox_TrustedStores
+
+ * @category   Turiknox
+ * @package    Turiknox_TrustedStores
+ * @copyright  Copyright (c) 2017 Turiknox
+ * @license    https://github.com/Turiknox/magento2-google-trusted-stores/blob/master/LICENSE.md
+ * @version    1.0.0
+ */
+?>
+<?php if ($block->isEnabled()): ?>
+    <!-- BEGIN GOOGLE TRUSTED STORES ORDER CONFIRMATION CODE -->
+    <div id="gts-order" style="display:none;" translate="no">
+        <span id="gts-o-id"><?php echo $block->escapeHtml($block->getOrderId()); ?></span>
+        <span id="gts-o-domain"><?php echo preg_replace("(^https?://)", "", $this->getBaseUrl()); ?></span>
+        <span id="gts-o-email"><?php echo $block->escapeHtml($block->getCustomerEmail()); ?></span>
+        <span id="gts-o-country"><?php echo $block->escapeHtml($block->getCustomerCountry()); ?></span>
+        <span id="gts-o-currency"><?php echo $block->getCurrency(); ?></span>
+        <span id="gts-o-total"><?php echo $block->getGrandTotal(); ?></span>
+        <span id="gts-o-discounts"><?php echo $block->getDiscounts(); ?></span>
+        <span id="gts-o-shipping-total"><?php echo $block->getShipping(); ?></span>
+        <span id="gts-o-tax-total"><?php echo $block->getTax(); ?></span>
+        <span id="gts-o-est-ship-date"><?php echo $block->getEstimatedShippingDate() ?></span>
+        <span id="gts-o-est-delivery-date"><?php echo $block->getEstimatedDeliveryDate() ?></span>
+        <span id="gts-o-has-preorder"><?php echo $block->doesOrderContainBackOrder() ? 'Y' : 'N' ?></span>
+        <span id="gts-o-has-digital"><?php echo $block->doesOrderContainDigitalProducts() ? 'Y' : 'N' ?></span>
+
+        <?php foreach($block->getOrder()->getAllVisibleItems() as $key => $item ) : ?>
+            <span class="gts-item">
+
+                <span class="gts-i-name"><?php echo $block->escapeHtml($item->getName()); ?></span>
+                <span class="gts-i-price"><?php echo number_format($item->getPrice(), 2, '.', ''); ?></span>
+                <span class="gts-i-quantity"><?php echo $block->escapeHtml($item->getQtyToInvoice()); ?></span>
+            </span>
+        <?php endforeach; ?>
+    </div>
+    <!-- END GOOGLE TRUSTED STORES ORDER CONFIRMATION CODE -->
+<?php endif; ?>
