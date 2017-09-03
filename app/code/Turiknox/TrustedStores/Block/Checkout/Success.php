@@ -1,5 +1,4 @@
 <?php
-namespace Turiknox\TrustedStores\Block\Checkout;
 /*
  * Turiknox_TrustedStores
 
@@ -9,52 +8,48 @@ namespace Turiknox\TrustedStores\Block\Checkout;
  * @license    https://github.com/Turiknox/magento2-google-trusted-stores/blob/master/LICENSE.md
  * @version    1.0.0
  */
+namespace Turiknox\TrustedStores\Block\Checkout;
+
 use Magento\Checkout\Model\Session;
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
 class Success extends Template
 {
+    const XML_PATH_TRUSTEDSTORES_ENABLE   = 'google/trustedstores/enable';
+    const XML_PATH_TRUSTEDSTORES_SHIPPING = 'google/trustedstores/estimated_shipping';
+    const XML_PATH_TRUSTEDSTORES_DELIVERY = 'google/trustedstores/estimated_delivery';
+
     /**
      * Date format of estimated shipping/delivery date
      *
      * @var string
      */
-    protected $_dateFormat = 'Y-m-d';
+    protected $dateFormat = 'Y-m-d';
 
     /**
      * @var Session
      */
-    protected $_checkoutSession;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    protected $_scopeConfig;
+    protected $checkoutSession;
 
     /**
      * @var \Magento\Sales\Model\Order
      */
-    protected $_order;
+    protected $order;
 
     /**
      * Success constructor.
      * @param Template\Context $context
      * @param Session $checkoutSession
-     * @param ScopeConfigInterface $scopeConfig
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         Session $checkoutSession,
-        ScopeConfigInterface $scopeConfig,
         array $data = []
-    )
-    {
-        $this->_checkoutSession = $checkoutSession;
-        $this->_scopeConfig = $scopeConfig;
-        $this->_order = $this->_checkoutSession->getLastRealOrder();
+    ) {
+        $this->checkoutSession = $checkoutSession;
+        $this->order = $this->checkoutSession->getLastRealOrder();
         parent::__construct($context, $data);
     }
 
@@ -65,7 +60,7 @@ class Success extends Template
      */
     public function isEnabled()
     {
-        return $this->_scopeConfig->getValue('google/trustedstores/enable', ScopeInterface::SCOPE_STORE);
+        return $this->_scopeConfig->getValue(self::XML_PATH_TRUSTEDSTORES_ENABLE, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -75,7 +70,7 @@ class Success extends Template
      */
     public function getOrder()
     {
-        return $this->_order;
+        return $this->order;
     }
 
     /**
@@ -85,8 +80,7 @@ class Success extends Template
      */
     public function getOrderId()
     {
-        return $this->_order->getIncrementId();
-
+        return $this->order->getIncrementId();
     }
 
     /**
@@ -96,7 +90,7 @@ class Success extends Template
      */
     public function getCustomerEmail()
     {
-        return $this->_order->getCustomerEmail();
+        return $this->order->getCustomerEmail();
     }
 
     /**
@@ -106,7 +100,7 @@ class Success extends Template
      */
     public function getCustomerCountry()
     {
-        return $this->_order->getShippingAddress()->getCountryId();
+        return $this->order->getShippingAddress()->getCountryId();
     }
 
     /**
@@ -116,7 +110,7 @@ class Success extends Template
      */
     public function getCurrency()
     {
-        return $this->_order->getOrderCurrencyCode();
+        return $this->order->getOrderCurrencyCode();
     }
 
     /**
@@ -126,7 +120,7 @@ class Success extends Template
      */
     public function getGrandTotal()
     {
-        return number_format($this->_order->getGrandTotal(), 2, '.' , '');
+        return number_format($this->order->getGrandTotal(), 2, '.', '');
     }
 
     /**
@@ -136,7 +130,7 @@ class Success extends Template
      */
     public function getDiscounts()
     {
-        return number_format($this->_order->getDiscountAmount(), 2, '.', '');
+        return number_format($this->order->getDiscountAmount(), 2, '.', '');
     }
 
     /**
@@ -146,7 +140,7 @@ class Success extends Template
      */
     public function getShipping()
     {
-        return number_format($this->_order->getShippingAmount(), 2, '.', '');
+        return number_format($this->order->getShippingAmount(), 2, '.', '');
     }
 
     /**
@@ -156,7 +150,7 @@ class Success extends Template
      */
     public function getTax()
     {
-        return number_format($this->_order->getTaxAmount(), 2, '.', '');
+        return number_format($this->order->getTaxAmount(), 2, '.', '');
     }
 
     /**
@@ -167,7 +161,10 @@ class Success extends Template
     public function getEstimatedShippingDate()
     {
         $createdAt = $this->getCreatedAt();
-        return $this->_addDays($createdAt, $this->_scopeConfig->getValue('google/trustedstores/estimated_shipping', ScopeInterface::SCOPE_STORE));
+        return $this->addDays(
+            $createdAt,
+            $this->_scopeConfig->getValue(self::XML_PATH_TRUSTEDSTORES_SHIPPING, ScopeInterface::SCOPE_STORE)
+        );
     }
 
     /**
@@ -178,7 +175,10 @@ class Success extends Template
     public function getEstimatedDeliveryDate()
     {
         $createdAt = $this->getCreatedAt();
-        return $this->_addDays($createdAt, $this->_scopeConfig->getValue('google/trustedstores/estimated_delivery', ScopeInterface::SCOPE_STORE));
+        return $this->addDays(
+            $createdAt,
+            $this->_scopeConfig->getValue(self::XML_PATH_TRUSTEDSTORES_DELIVERY, ScopeInterface::SCOPE_STORE)
+        );
     }
 
     /**
@@ -188,7 +188,7 @@ class Success extends Template
      */
     public function getCreatedAt()
     {
-        return $this->_order->getCreatedAt();
+        return $this->order->getCreatedAt();
     }
 
     /**
@@ -199,9 +199,9 @@ class Success extends Template
      *
      * @return bool|string
      */
-    private function _addDays($date, $daysToAdd)
+    private function addDays($date, $daysToAdd)
     {
-        return date($this->_dateFormat, strtotime($date . ' + ' . $daysToAdd . ' days'));
+        return date($this->dateFormat, strtotime($date . ' + ' . $daysToAdd . ' days'));
     }
 
     /**
@@ -212,7 +212,7 @@ class Success extends Template
     public function doesOrderContainDigitalProducts()
     {
         $containsDigitalProducts = false;
-        foreach($this->getOrder()->getAllVisibleItems() as $item) {
+        foreach ($this->getOrder()->getAllVisibleItems() as $item) {
             if ($item->getIsVirtual()) {
                 $containsDigitalProducts = true;
             }
@@ -228,8 +228,8 @@ class Success extends Template
     public function doesOrderContainBackOrder()
     {
         $containsBackOrder = false;
-        foreach($this->getOrder()->getAllVisibleItems() as $item) {
-            if($item->getQtyBackordered()) {
+        foreach ($this->getOrder()->getAllVisibleItems() as $item) {
+            if ($item->getQtyBackordered()) {
                 $containsBackOrder = true;
             }
         }

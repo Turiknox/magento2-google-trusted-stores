@@ -1,5 +1,4 @@
 <?php
-namespace Turiknox\TrustedStores\Model\Config\Source;
 /*
  * Turiknox_TrustedStores
 
@@ -9,6 +8,8 @@ namespace Turiknox\TrustedStores\Model\Config\Source;
  * @license    https://github.com/Turiknox/magento2-google-trusted-stores/blob/master/LICENSE.md
  * @version    1.0.0
  */
+namespace Turiknox\TrustedStores\Model\Config\Source;
+
 class Badgeposition
 {
     /**

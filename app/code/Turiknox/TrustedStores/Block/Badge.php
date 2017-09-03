@@ -1,5 +1,4 @@
 <?php
-namespace Turiknox\TrustedStores\Block;
 /*
  * Turiknox_TrustedStores
 
@@ -9,40 +8,35 @@ namespace Turiknox\TrustedStores\Block;
  * @license    https://github.com/Turiknox/magento2-google-trusted-stores/blob/master/LICENSE.md
  * @version    1.0.0
  */
+namespace Turiknox\TrustedStores\Block;
+
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\Locale\Resolver;
 
 class Badge extends Template
 {
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    protected $_scopeConfig;
+    const XML_PATH_TRUSTEDSTORES_ENABLE   = 'google/trustedstores/enable';
+    const XML_PATH_TRUSTEDSTORES_ID       = 'google/trustedstores/id';
+    const XML_PATH_TRUSTEDSTORES_POSITION = 'google/trustedstores/position';
 
     /**
      * @var Resolver
      */
-    protected $_localeResolver;
+    protected $localeResolver;
 
     /**
      * Badge constructor.
      * @param Template\Context $context
-     * @param ScopeConfigInterface $scopeConfig
      * @param Resolver $localeResolver
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
-        ScopeConfigInterface $scopeConfig,
         Resolver $localeResolver,
         array $data = []
-    )
-    {
-        $this->_scopeConfig = $scopeConfig;
-        $this->_localeResolver = $localeResolver;
+    ) {
+        $this->localeResolver = $localeResolver;
         parent::__construct($context, $data);
     }
 
@@ -53,7 +47,7 @@ class Badge extends Template
      */
     public function isEnabled()
     {
-        return $this->_scopeConfig->getValue('google/trustedstores/enable', ScopeInterface::SCOPE_STORE);
+        return $this->_scopeConfig->getValue(self::XML_PATH_TRUSTEDSTORES_ENABLE, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -63,7 +57,7 @@ class Badge extends Template
      */
     public function getTrustedStoresId()
     {
-        return $this->_scopeConfig->getValue('google/trustedstores/id', ScopeInterface::SCOPE_STORE);
+        return $this->_scopeConfig->getValue(self::XML_PATH_TRUSTEDSTORES_ID, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -73,7 +67,7 @@ class Badge extends Template
      */
     public function getBadgePosition()
     {
-        return $this->_scopeConfig->getValue('google/trustedstores/position', ScopeInterface::SCOPE_STORE);
+        return $this->_scopeConfig->getValue(self::XML_PATH_TRUSTEDSTORES_POSITION, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -83,6 +77,6 @@ class Badge extends Template
      */
     public function getLocaleCode()
     {
-        return $this->_localeResolver->getLocale();
+        return $this->localeResolver->getLocale();
     }
 }
